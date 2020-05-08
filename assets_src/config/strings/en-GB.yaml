@@ -1,0 +1,7 @@
+---
+
+# This is the string configuration file for English.
+en-GB:
+    structure_aw_fire: Fire
+    unit_description_aw_fire: Reveals all units to every player within a 3 tile radius
+...
