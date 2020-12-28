@@ -3,32 +3,31 @@ local Wargroove = require "wargroove/wargroove"
 
 local Triggers = {}
 
-function Triggers.getSpawnTrigger(referenceTrigger)
+function Triggers.getStateSetTrigger(referenceTrigger)
     local trigger = {}
-    trigger.id =  "AW Fire Spawn Trigger"
-    trigger.recurring = "oncePerPlayer"
+    trigger.id =  "MMR MatchId State Set"
+    trigger.recurring = "once"
     trigger.players = referenceTrigger.players
     trigger.conditions = {}
     trigger.actions = {}
     
     table.insert(trigger.conditions, { id = "player_turn", parameters = { "current" } })
     table.insert(trigger.conditions, { id = "start_of_turn", parameters = { } })
-    table.insert(trigger.actions, { id = "aw_fire_spawn", parameters = { "current" }  })
+    table.insert(trigger.actions, { id = "mmr_set_match_id", parameters = { "current" }  })
     
     return trigger
 end
 
-function Triggers.getVisionTrigger(referenceTrigger)
+function Triggers.getVictoryTrigger(referenceTrigger)
     local trigger = {}
-    trigger.id =  "AW Fire Vision Trigger"
+    trigger.id =  "MMR Victory Trigger"
     trigger.recurring = "repeat"
     trigger.players = referenceTrigger.players
     trigger.conditions = {}
     trigger.actions = {}
     
-    table.insert(trigger.conditions, { id = "player_turn", parameters = { "current" } })
-    table.insert(trigger.conditions, { id = "start_of_turn", parameters = { } })
-    table.insert(trigger.actions, { id = "aw_fire_vision", parameters = { "current" }  })
+    table.insert(trigger.conditions, { id = "player_victorious", parameters = { "current" } })
+    table.insert(trigger.actions, { id = "mmr_publish", parameters = { "current" }  })
     
     return trigger
 end

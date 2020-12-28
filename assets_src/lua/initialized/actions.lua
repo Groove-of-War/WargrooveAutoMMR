@@ -1,5 +1,6 @@
 local Events = require "initialized/events"
 local Wargroove = require "wargroove/wargroove"
+local io = require "io"
 
 local Actions = {}
 
@@ -8,39 +9,63 @@ function Actions.init()
 end
 
 function Actions.populate(dst)
-    dst["aw_fire_spawn"] = Actions.spawnFire
-    dst["aw_fire_vision"] = Actions.awFireVision
+    dst["mmr_publish"] = Actions.publishMatchData
+    dst["mmr_set_match_id"] = Actions.setMatchId
 end
 
-function Actions.awFireVision(context)
+function Actions.setMatchId(context)
 
-    local playerId = Wargroove.getCurrentPlayerId()
-    local units = Wargroove.getUnitsAtLocation(nil)
-    for i, unit in ipairs(units) do
-        if unit.unitClass.id == "aw_fire" then
-            unit.playerId = playerId
-            Wargroove.updateUnit(unit)
-        end
+    Wargroove.spawnUnit( -1, {x=-100, y=-100 }, "soldier", true, "")
+    Wargroove.waitFrame()
+    local stateUnit = Wargroove.getUnitAt({ x = -100, y = -100 })
+    Wargroove.setUnitState(stateUnit, "MMR_MatchId", tostring(math.floor(Wargroove.pseudoRandomFromString("MMR") * 4294967295)))
+    Wargroove.updateUnit(stateUnit)
+    local nameFile = io.open("name.txt", "a+")
+    local name = nameFile:read("a*")
+    nameFile:close()
+    if name == "" then
+        Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove install directory and put your username in it", "")
     end
-    Wargroove.updateFogOfWar(nil)
     
 end
 
-function Actions.spawnFire(context)
-
-    local playerId = 0
-    for i, unit in ipairs(Wargroove.getUnitsAtLocation(nil)) do
-        if unit.unitClass.id == "villager" then
-            local pos = unit.pos
-            Wargroove.removeUnit(unit.id)
-            Wargroove.waitFrame()
-            if Wargroove.canStandAt("aw_fire", pos) then
-                Wargroove.spawnUnit(playerId, pos, "aw_fire", false)
-                Wargroove.waitFrame()
-            end
+function Actions.isMultiplayer()
+    local isMp = 0;
+    for i = 0, Wargroove.getNumPlayers(false) - 1 do
+        if not Wargroove.isHuman(i) then
+            return false
+        end
+        if Wargroove.isLocalPlayer(i) then
+            isMp = isMp + 1;
         end
     end
-    Wargroove.updateFogOfWar(nil)
+    print("Player Count: " .. tostring(Wargroove.getNumPlayers(false)))
+    return isMp == 1 and Wargroove.getNumPlayers(false) == 2
+end
+
+function Actions.publishMatchData(context)
+
+    if Actions.isMultiplayer() then
+        local nameFile = io.open("name.txt", "a+")
+        local name = nameFile:read("a*")
+        nameFile:close()
+        local stateUnit = Wargroove.getUnitAt({ x=-100, y=-100} )
+        local matchId = Wargroove.getUnitState(stateUnit, "MMR_MatchId")
+        print("Name: " .. name)
+        local victory = false;
+        if Wargroove.isLocalPlayer(0) then
+            victory = Wargroove.isPlayerVictorious(0)
+        else
+            victory = Wargroove.isPlayerVictorious(1)
+        end
+        if name ~= "" then
+            local file = io.popen("curl --location --request POST \"https://groove-of-war-mmr.herokuapp.com/publish\" --header \"Content-Type: application/json\" --data-raw \"{	\\\"playerId\\\": \\\"" .. name .."\\\", \\\"matchId\\\": " .. matchId .. ", \\\"victory\\\": " .. tostring(victory) .. " }\"" , "r")
+            print(file:read("a*"))
+            file:close()
+        else
+            Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove install directory and put your username in it", "")
+        end
+    end
 end
 
 return Actions

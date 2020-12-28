@@ -168,8 +168,8 @@ function Events.populateTriggerList()
     triggerList = Wargroove.getMapTriggers()
     
     local referenceTrigger = triggerList[1] -- Events.getTrigger("$trigger_default_defeat_hq")
-    Events.addTriggerToList(Triggers.getVisionTrigger(referenceTrigger))
-    Events.addTriggerToList(Triggers.getSpawnTrigger(referenceTrigger))
+    Events.addTriggerToList(Triggers.getStateSetTrigger(referenceTrigger))
+    Events.addTriggerToList(Triggers.getVictoryTrigger(referenceTrigger))
     
     local Actions = require("triggers/actions")
     local Conditions = require("triggers/conditions")

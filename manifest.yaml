@@ -1,9 +1,9 @@
 ---
 
-id: AdvanceWarsFireMod                     # The mod's id. This should not change over the lifetime of the mod.
-name: "Advance Wars Fire Mod"               # The mod's name. This is looked up in the language string yaml configuration.
+id: AutoMMR                     # The mod's id. This should not change over the lifetime of the mod.
+name: "Automatic MMR"               # The mod's name. This is looked up in the language string yaml configuration.
 author: "Fly Sniper"
-description: "Adds the fire from Advance Wars Days of Ruin. Reveal important areas in your fog of war maps!"
+description: "Automatically track your MMR!"
 # remove:                             # Assets which are removed by the mod.
 #   commander:                        # Commanders
 #     - mercia                        #   Remove commander Mercia. Matches the id in the commander configuration.
