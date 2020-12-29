@@ -15,9 +15,9 @@ end
 
 function Actions.setMatchId(context)
 
-    Wargroove.spawnUnit( -1, {x=-100, y=-100 }, "soldier", true, "")
+    Wargroove.spawnUnit( -1, {x=-85, y=-56 }, "soldier", true, "")
     Wargroove.waitFrame()
-    local stateUnit = Wargroove.getUnitAt({ x = -100, y = -100 })
+    local stateUnit = Wargroove.getUnitAt({x=-85, y=-56 })
     Wargroove.setUnitState(stateUnit, "MMR_MatchId", tostring(math.floor(Wargroove.pseudoRandomFromString("MMR") * 4294967295)))
     Wargroove.updateUnit(stateUnit)
     local nameFile = io.open("name.txt", "a+")
