@@ -64,6 +64,7 @@ function Actions.publishMatchData(context)
             file:close()
         else
             Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove install directory and put your username in it", "")
+            Wargroove.showDialogueBox("neutral", "mercia", "This match will have to be entered manually", "")
         end
     end
 end
