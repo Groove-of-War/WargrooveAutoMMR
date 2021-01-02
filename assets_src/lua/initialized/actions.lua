@@ -49,7 +49,7 @@ function Actions.publishMatchData(context)
         local nameFile = io.open("name.txt", "a+")
         local name = nameFile:read("a*")
         nameFile:close()
-        local stateUnit = Wargroove.getUnitAt({ x=-100, y=-100} )
+        local stateUnit = Wargroove.getUnitAt({x=-85, y=-56 } )
         local matchId = Wargroove.getUnitState(stateUnit, "MMR_MatchId")
         print("Name: " .. name)
         local victory = false;
