@@ -1,6 +1,7 @@
 local Events = require "initialized/events"
 local Wargroove = require "wargroove/wargroove"
 local io = require "io"
+local html = require "html"
 
 local Actions = {}
 
@@ -60,9 +61,21 @@ function Actions.publishMatchData(context)
             victory = Wargroove.isPlayerVictorious(1)
         end
         if name ~= "" then
-            local file = io.popen("curl --location --request POST \"https://groove-of-war-mmr.herokuapp.com/publish\" --header \"Content-Type: application/json\" --data-raw \"{	\\\"playerId\\\": \\\"" .. name .."\\\", \\\"matchId\\\": " .. matchId .. ", \\\"victory\\\": " .. tostring(victory) .. " }\"" , "r")
-            print(file:read("a*"))
-            file:close()
+            local curlProc = io.popen("curl --location --request POST \"https://groove-of-war-mmr.herokuapp.com/publish\" --header \"Content-Type: application/json\" --data-raw \"{	\\\"playerId\\\": \\\"" .. name .."\\\", \\\"matchId\\\": " .. matchId .. ", \\\"victory\\\": " .. tostring(victory) .. " }\"" , "r")
+            local response = curlProc:read("a*")
+            print("CURL Response: " .. response)
+            curlProc:close()
+            if response == nil or response == "" then
+                local htmlFile = io.open("send.html", "w")
+                html = string.gsub(html, "<playerName>", name)
+                html = string.gsub(html, "<matchId>", tostring(matchId))
+                html = string.gsub(html, "<victory>", tostring(victory))
+                htmlFile:write(html)
+                htmlFile:close()
+                local file = io.popen("start \"\" \"file://%cd%\\send.html\" --allow-file-access-from-files" , "r")
+                print(file:read("a*"))
+                file:close()
+            end
         else
             Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove folder directory and put your username in it", "")
             Wargroove.showDialogueBox("neutral", "mercia", "Your install folder is under Steam->Right click Wargroove->Properties->Browse Local files", "")
