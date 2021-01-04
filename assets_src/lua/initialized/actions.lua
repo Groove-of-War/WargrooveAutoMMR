@@ -63,7 +63,7 @@ function Actions.publishMatchData(context)
         if name ~= "" then
             local curlProc = io.popen("curl --location --request POST \"https://groove-of-war-mmr.herokuapp.com/publish\" --header \"Content-Type: application/json\" --data-raw \"{	\\\"playerId\\\": \\\"" .. name .."\\\", \\\"matchId\\\": " .. matchId .. ", \\\"victory\\\": " .. tostring(victory) .. " }\"" , "r")
             local response = curlProc:read("a*")
-            print("CURL Response: " .. response)
+            print("CURL ran")
             curlProc:close()
             if response == nil or response == "" then
                 local htmlFile = io.open("send.html", "w")
@@ -73,11 +73,11 @@ function Actions.publishMatchData(context)
                 htmlFile:write(html)
                 htmlFile:close()
                 local file = io.popen("start \"\" \"file://%cd%\\send.html\" --allow-file-access-from-files" , "r")
-                print(file:read("a*"))
+                print("HTML file used")
                 file:close()
             end
         else
-            Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove folder directory and put your username in it", "")
+            Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove install folder and put your username in it", "")
             Wargroove.showDialogueBox("neutral", "mercia", "Your install folder is under Steam->Right click Wargroove->Properties->Browse Local files", "")
             Wargroove.showDialogueBox("neutral", "mercia", "This match will have to be entered manually", "")
         end
