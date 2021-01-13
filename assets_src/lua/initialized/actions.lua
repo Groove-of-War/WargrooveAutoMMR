@@ -25,7 +25,7 @@ function Actions.setMatchId(context)
     local name = nameFile:read("a*")
     nameFile:close()
     if name == "" then
-        Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove install folder and put your username in it", "")
+        Wargroove.showDialogueBox("neutral", "mercia", "Please download your name.txt into your Wargroove install folder", "")
         Wargroove.showDialogueBox("neutral", "mercia", "Your install folder is under Steam->Right click Wargroove->Properties->Browse Local files", "")
     end
     
@@ -77,7 +77,7 @@ function Actions.publishMatchData(context)
                 file:close()
             end
         else
-            Wargroove.showDialogueBox("neutral", "mercia", "Please create a name.txt in your Wargroove install folder and put your username in it", "")
+            Wargroove.showDialogueBox("neutral", "mercia", "Please download your name.txt into your Wargroove install folder", "")
             Wargroove.showDialogueBox("neutral", "mercia", "Your install folder is under Steam->Right click Wargroove->Properties->Browse Local files", "")
             Wargroove.showDialogueBox("neutral", "mercia", "This match will have to be entered manually", "")
         end
