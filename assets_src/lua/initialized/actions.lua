@@ -61,7 +61,7 @@ function Actions.publishMatchData(context)
             victory = Wargroove.isPlayerVictorious(1)
         end
         if name ~= "" then
-            local curlProc = io.popen("curl --location --request POST \"https://groove-of-war-mmr.herokuapp.com/publish\" --header \"Content-Type: application/json\" --data-raw \"{	\\\"playerId\\\": \\\"" .. name .."\\\", \\\"matchId\\\": " .. matchId .. ", \\\"victory\\\": " .. tostring(victory) .. " }\"" , "r")
+            local curlProc = io.popen("curl --location --request POST \"https://groove-of-war-mmr.herokuapp.com/publish\" --header \"Content-Type: application/json\" --data-raw \"{	\\\"authKey\\\": \\\"" .. name .."\\\", \\\"matchId\\\": " .. matchId .. ", \\\"victory\\\": " .. tostring(victory) .. ", \\\"modApiKey\\\": \\\"uEZEyLTRglClnWrie6ObIvo47La5CkDnnFgi18gHrdTxV7n229Sb5EGF3ebEvGjh9ZJ7Ds7FeiIXt4YHYWRk0YuTN2GhcjFAZoA\\\"}\"" , "r")
             local response = curlProc:read("a*")
             print("CURL ran")
             curlProc:close()

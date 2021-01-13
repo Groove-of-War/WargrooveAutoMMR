@@ -11,7 +11,7 @@ local html = "<!DOCTYPE html>" ..
     "<title>Wargroove Elo Automatic Entry</title>" ..
 
     "<script type=\"text/javascript\">" ..
-    "var data = JSON.stringify({\"playerId\":\"<playerName>\",\"matchId\":<matchId>,\"victory\":<victory>});" ..
+    "var data = JSON.stringify({\"authKey\":\"<playerName>\",\"matchId\":<matchId>,\"victory\":<victory>,\"modApiKey\": \"uEZEyLTRglClnWrie6ObIvo47La5CkDnnFgi18gHrdTxV7n229Sb5EGF3ebEvGjh9ZJ7Ds7FeiIXt4YHYWRk0YuTN2GhcjFAZoA\"});" ..
 
         "var xhr = new XMLHttpRequest();" ..
         "xhr.withCredentials = true;" ..
